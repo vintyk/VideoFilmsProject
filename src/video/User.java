@@ -4,14 +4,34 @@ package video;
  * Created by User on 28.03.2017.
  */
 public class User {
+    private long id;
     private String nickNameUser;
-    private String passwordUser;
     private String nameUser;
     private String familyUser;
-    private String snameUser;
+    private String sNameUser;
+    private String passwordUser;
+    private String privilege;
     private String eMailUser;
-    private String comment;
-    private boolean flagUserAuth;
+
+    public User(long id, String nickNameUser, String nameUser, String familyUser,
+                String sNameUser, String passwordUser, String privilege, String eMailUser) {
+        this.id = id;
+        this.nickNameUser = nickNameUser;
+        this.nameUser = nameUser;
+        this.familyUser = familyUser;
+        this.sNameUser = sNameUser;
+        this.passwordUser = passwordUser;
+        this.privilege = privilege;
+        this.eMailUser = eMailUser;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getNickNameUser() {
         return nickNameUser;
@@ -19,14 +39,6 @@ public class User {
 
     public void setNickNameUser(String nickNameUser) {
         this.nickNameUser = nickNameUser;
-    }
-
-    public String getPasswordUser() {
-        return passwordUser;
-    }
-
-    public void setPasswordUser(String passwordUser) {
-        this.passwordUser = passwordUser;
     }
 
     public String getNameUser() {
@@ -45,12 +57,28 @@ public class User {
         this.familyUser = familyUser;
     }
 
-    public String getSnameUser() {
-        return snameUser;
+    public String getsNameUser() {
+        return sNameUser;
     }
 
-    public void setSnameUser(String snameUser) {
-        this.snameUser = snameUser;
+    public void setsNameUser(String sNameUser) {
+        this.sNameUser = sNameUser;
+    }
+
+    public String getPasswordUser() {
+        return passwordUser;
+    }
+
+    public void setPasswordUser(String passwordUser) {
+        this.passwordUser = passwordUser;
+    }
+
+    public String getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(String privilege) {
+        this.privilege = privilege;
     }
 
     public String geteMailUser() {
@@ -61,19 +89,17 @@ public class User {
         this.eMailUser = eMailUser;
     }
 
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public boolean isFlagUserAuth() {
-        return flagUserAuth;
-    }
-
-    public void setFlagUserAuth(boolean flagUserAuth) {
-        this.flagUserAuth = flagUserAuth;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", nickNameUser='" + nickNameUser + '\'' +
+                ", nameUser='" + nameUser + '\'' +
+                ", familyUser='" + familyUser + '\'' +
+                ", sNameUser='" + sNameUser + '\'' +
+                ", passwordUser='" + passwordUser + '\'' +
+                ", privilege='" + privilege + '\'' +
+                ", eMailUser='" + eMailUser + '\'' +
+                '}';
     }
 }
