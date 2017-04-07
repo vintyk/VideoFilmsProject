@@ -18,13 +18,16 @@ public class MainStarter {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-         //  printMovieById(1);
+
+        //addUser("Валерий", "Нечай", "Сергеевич", "vn@ecp.by", 2, "qwerty" );
+        //addUser("Бобейко", "Александр", "Григорьевич", "ab@ecp.by", 2, "qwerty2" );
+
         List<Movies> movies = getMoviesByYear(1994);
         movies.stream().forEach(System.out::println);
 
-        List<People> people = getPeopleByMovieId(1);
-        movies.stream().forEach(System.out::println);
-        //System.out.println(getMovieById(1L));
+        List<People> people = getPeopleByMovieId(6L);
+        people.stream().forEach(System.out::println);
+
     }
 
     private static Movies getMovieById(long movieId) {
@@ -135,7 +138,6 @@ public class MainStarter {
                             "       people.family,\n" +
                             "       people.s_name,\n" +
                             "       people.date_bday\n" +
-                            "       people.Id\n" +
                             "FROM ((movies_project.movie_people_role    movie_people_role\n" +
                             "       INNER JOIN movies_project.roles roles\n" +
                             "          ON (movie_people_role.id_role = roles.id))\n" +
@@ -150,11 +152,11 @@ public class MainStarter {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while(resultSet.next()) {
                         long idPeople = resultSet.getLong("movies.id");
-                        String role = resultSet.getString("role.name");
-                        String dateOfBirthPeople = resultSet.getString("people.year");
+                        String role = resultSet.getString("roles.name");
                         String namePeople = resultSet.getString("people.name");
                         String familyPeople = resultSet.getString("people.family");
                         String sNamePeople = resultSet.getString("people.s_name");
+                        String dateOfBirthPeople = resultSet.getString("people.date_bday");
                         People people = new People(idPeople, namePeople, familyPeople, sNamePeople, dateOfBirthPeople, role);
                         result.add(people);
                     }
@@ -164,6 +166,29 @@ public class MainStarter {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private static void addUser(String nameUser,
+                                String familyUser,
+                                String sNameUser,
+                                String eMailUser,
+                                int privilege_id,
+                                String passwordUser) {
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(
+                    "insert into users (name, family, s_name, password, privilege_id, e_mail) " +
+                            " VALUES (?, ?, ?, ?, ?, ?)")) {
+                preparedStatement.setString(1, nameUser);
+                preparedStatement.setString(2, familyUser);
+                preparedStatement.setString(3, sNameUser);
+                preparedStatement.setString(4, eMailUser);
+                preparedStatement.setInt(5, privilege_id);
+                preparedStatement.setString(6, passwordUser);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void printMovieById (long id) {
