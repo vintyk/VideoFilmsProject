@@ -19,10 +19,14 @@ public class MainStarter {
             e.printStackTrace();
         }
          //  printMovieById(1);
-        //List<Movies> movies = getMovieById(1L);
-        //movies.stream().forEach(System.out::println);
-        System.out.println(getMovieById(1L));
+        List<Movies> movies = getMoviesByYear(1994);
+        movies.stream().forEach(System.out::println);
+
+        List<People> people = getPeopleByMovieId(1);
+        movies.stream().forEach(System.out::println);
+        //System.out.println(getMovieById(1L));
     }
+
     private static Movies getMovieById(long movieId) {
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -87,37 +91,112 @@ public class MainStarter {
         return null;
     }
 
-        private static void printMovieById (long id) {
-            try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
-                try (PreparedStatement preparedStatement = connection.prepareStatement(
-                        "SELECT movies.name,\n" +
-                                "       people.name,\n" +
-                                "       people.family,\n" +
-                                "       roles.name\n" +
-                                "FROM ((movies_project.movie_people_role    movie_people_role\n" +
-                                "       INNER JOIN movies_project.roles roles\n" +
-                                "          ON (movie_people_role.id_role = roles.id))\n" +
-                                "      INNER JOIN movies_project.people people\n" +
-                                "         ON     (people.id_role = roles.id)\n" +
-                                "            AND (movie_people_role.id_people = people.Id))\n" +
-                                "     INNER JOIN movies_project.movies movies\n" +
-                                "        ON (movie_people_role.id_movie = movies.id)\n" +
-                                "        where movies.id = ?\n" +
-                                "ORDER BY movies.name ASC, roles.name DESC")) {
-                    preparedStatement.setLong(1, id);
-                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                        while (resultSet.next()) {
-                            //if (resultSet.next()) {
-                            System.out.println("Название: " + resultSet.getString("movies.name"));
-                            System.out.println("Имя: " + resultSet.getString("people.name"));
-                            System.out.println("Фамилия: " + resultSet.getString("people.family"));
-                            System.out.println("Роль: " + resultSet.getString("roles.name"));
-                            // }
-                        }
+        private static List<Movies> getMoviesByYear(int year) {
+        List<Movies> result = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT movies.name,\n" +
+                            "       Year(movies.year),\n" +
+                            "       countries.name,\n" +
+                            "       genres.name,\n" +
+                            "       movies.id\n" +
+                            "FROM (movies_project.movies movies\n" +
+                            "      INNER JOIN movies_project.countries countries\n" +
+                            "         ON (movies.countrie = countries.id))\n" +
+                            "     INNER JOIN movies_project.genres genres ON (movies.genre = genres.id)\n" +
+                            "    where year(movies.year) = ?\n" +
+                            "ORDER BY movies.name ASC")) {
+                preparedStatement.setInt(1, year);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while(resultSet.next()) {
+                        long idMovie = resultSet.getLong("movies.id");
+                        String nameMovie = resultSet.getString("movies.name");
+                        String dateReleaseMovie = resultSet.getString("Year(movies.year)");
+                        String genreMovie = resultSet.getString("genres.name");
+                        String countryMovie = resultSet.getString("countries.name");
+                        Movies movies = new Movies(idMovie, nameMovie, genreMovie, countryMovie, dateReleaseMovie);
+                        result.add(movies);
                     }
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return result;
+    }
+
+    private static List<People> getPeopleByMovieId(long idMovie) {
+        List<People> result = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT movies.id,\n" +
+                            "       roles.name,\n" +
+                            "       people.name,\n" +
+                            "       people.family,\n" +
+                            "       people.s_name,\n" +
+                            "       people.date_bday\n" +
+                            "       people.Id\n" +
+                            "FROM ((movies_project.movie_people_role    movie_people_role\n" +
+                            "       INNER JOIN movies_project.roles roles\n" +
+                            "          ON (movie_people_role.id_role = roles.id))\n" +
+                            "      INNER JOIN movies_project.people people\n" +
+                            "         ON     (people.id_role = roles.id)\n" +
+                            "            AND (movie_people_role.id_people = people.Id))\n" +
+                            "     INNER JOIN movies_project.movies movies\n" +
+                            "        ON (movie_people_role.id_movie = movies.id)\n" +
+                            "        where movies.id = ?\n" +
+                            "ORDER BY roles.name DESC")) {
+                preparedStatement.setLong(1, idMovie);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while(resultSet.next()) {
+                        long idPeople = resultSet.getLong("movies.id");
+                        String role = resultSet.getString("role.name");
+                        String dateOfBirthPeople = resultSet.getString("people.year");
+                        String namePeople = resultSet.getString("people.name");
+                        String familyPeople = resultSet.getString("people.family");
+                        String sNamePeople = resultSet.getString("people.s_name");
+                        People people = new People(idPeople, namePeople, familyPeople, sNamePeople, dateOfBirthPeople, role);
+                        result.add(people);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private static void printMovieById (long id) {
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT movies.name,\n" +
+                            "       people.name,\n" +
+                            "       people.family,\n" +
+                            "       roles.name\n" +
+                            "FROM ((movies_project.movie_people_role    movie_people_role\n" +
+                            "       INNER JOIN movies_project.roles roles\n" +
+                            "          ON (movie_people_role.id_role = roles.id))\n" +
+                            "      INNER JOIN movies_project.people people\n" +
+                            "         ON     (people.id_role = roles.id)\n" +
+                            "            AND (movie_people_role.id_people = people.Id))\n" +
+                            "     INNER JOIN movies_project.movies movies\n" +
+                            "        ON (movie_people_role.id_movie = movies.id)\n" +
+                            "        where movies.id = ?\n" +
+                            "ORDER BY movies.name ASC, roles.name DESC")) {
+                preparedStatement.setLong(1, id);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        //if (resultSet.next()) {
+                        System.out.println("Название: " + resultSet.getString("movies.name"));
+                        System.out.println("Имя: " + resultSet.getString("people.name"));
+                        System.out.println("Фамилия: " + resultSet.getString("people.family"));
+                        System.out.println("Роль: " + resultSet.getString("roles.name"));
+                        // }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
