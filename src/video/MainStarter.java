@@ -21,12 +21,13 @@ public class MainStarter {
 
         //addUser("Валерий", "Нечай", "Сергеевич", "vn@ecp.by", 2, "qwerty" );
         //addUser("Бобейко", "Александр", "Григорьевич", "ab@ecp.by", 2, "qwerty2" );
+        addMovie("От заката до рассвета", 4, 1, "01.01.1992");
 
-        List<Movies> movies = getMoviesByYear(1994);
-        movies.stream().forEach(System.out::println);
-
-        List<People> people = getPeopleByMovieId(6L);
-        people.stream().forEach(System.out::println);
+//        List<Movies> movies = getMoviesByYear(1994);
+//        movies.stream().forEach(System.out::println);
+//
+//        List<People> people = getPeopleByMovieId(6L);
+//        people.stream().forEach(System.out::println);
 
     }
 
@@ -176,7 +177,7 @@ public class MainStarter {
                                 String passwordUser) {
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(
-                    "insert into users (name, family, s_name, password, privilege_id, e_mail) " +
+                    "INSERT INTO users (name, family, s_name, password, privilege_id, e_mail) " +
                             " VALUES (?, ?, ?, ?, ?, ?)")) {
                 preparedStatement.setString(1, nameUser);
                 preparedStatement.setString(2, familyUser);
@@ -191,6 +192,24 @@ public class MainStarter {
         }
     }
 
+    private static void addMovie(String nameMovie,
+                                 int genreMovie,
+                                 int countryMovie,
+                                 String dateReleaseMovie) {
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO users (name, genre, countrie, year)" +
+                            " VALUES (?, ?, ?, ?)")) {
+                preparedStatement.setString(1, nameMovie);
+                preparedStatement.setInt(2, genreMovie);
+                preparedStatement.setInt(3, countryMovie);
+                preparedStatement.setString(4, dateReleaseMovie);
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     private static void printMovieById (long id) {
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(
