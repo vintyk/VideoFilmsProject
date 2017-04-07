@@ -21,7 +21,7 @@ public class MainStarter {
 
         //addUser("Валерий", "Нечай", "Сергеевич", "vn@ecp.by", 2, "qwerty" );
         //addUser("Бобейко", "Александр", "Григорьевич", "ab@ecp.by", 2, "qwerty2" );
-        addMovie("От заката до рассвета", 4, 1, "01.01.1992");
+        addMovie("От заката до рассвета", 4, 1, "1992-01-01");
 
 //        List<Movies> movies = getMoviesByYear(1994);
 //        movies.stream().forEach(System.out::println);
@@ -198,7 +198,7 @@ public class MainStarter {
                                  String dateReleaseMovie) {
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(
-                    "INSERT INTO users (name, genre, countrie, year)" +
+                    "INSERT INTO movies (name, genre, countrie, year)" +
                             " VALUES (?, ?, ?, ?)")) {
                 preparedStatement.setString(1, nameMovie);
                 preparedStatement.setInt(2, genreMovie);
