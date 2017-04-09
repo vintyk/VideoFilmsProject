@@ -1,6 +1,6 @@
-package video;
+package video.Entity;
 
-import java.util.Date;
+import video.Entity.People;
 
 /**
  * Created by Vinty on 06.04.2017.
@@ -13,7 +13,8 @@ public class Movies {
     private String dateReleaseMovie;
     private People people;
 
-    public Movies(long id, String nameMovie, String genreMovie, String countryMovie, String dateReleaseMovie, People people) {
+    public Movies(long id, String nameMovie, String genreMovie, String countryMovie,
+                   String dateReleaseMovie, People people) {
         this.id = id;
         this.nameMovie = nameMovie;
         this.genreMovie = genreMovie;
@@ -21,6 +22,15 @@ public class Movies {
         this.dateReleaseMovie = dateReleaseMovie;
         this.people = people;
     }
+    public Movies(long id, String nameMovie, String genreMovie, String countryMovie,
+                  String dateReleaseMovie) {
+        this.id = id;
+        this.nameMovie = nameMovie;
+        this.genreMovie = genreMovie;
+        this.countryMovie = countryMovie;
+        this.dateReleaseMovie = dateReleaseMovie;
+    }
+
 
     public long getId() {
         return id;
@@ -81,4 +91,5 @@ public class Movies {
                 ", people=" + people +
                 '}';
     }
+
 }
