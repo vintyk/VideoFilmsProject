@@ -1,19 +1,17 @@
 package video.Entity;
-
 import video.Entity.People;
-
 /**
  * Created by Vinty on 06.04.2017.
  */
 public class Movies {
     private long id;
     private String nameMovie;
-    private String genreMovie;
-    private String countryMovie;
+    private int genreMovie;
+    private int countryMovie;
     private String dateReleaseMovie;
     private People people;
 
-    public Movies(long id, String nameMovie, String genreMovie, String countryMovie,
+    public Movies(long id, String nameMovie, int genreMovie, int countryMovie,
                    String dateReleaseMovie, People people) {
         this.id = id;
         this.nameMovie = nameMovie;
@@ -22,7 +20,7 @@ public class Movies {
         this.dateReleaseMovie = dateReleaseMovie;
         this.people = people;
     }
-    public Movies(long id, String nameMovie, String genreMovie, String countryMovie,
+    public Movies(long id, String nameMovie, int genreMovie, int countryMovie,
                   String dateReleaseMovie) {
         this.id = id;
         this.nameMovie = nameMovie;
@@ -30,7 +28,12 @@ public class Movies {
         this.countryMovie = countryMovie;
         this.dateReleaseMovie = dateReleaseMovie;
     }
-
+    public Movies(String nameMovie, int genreMovie, int countryMovie, String dateReleaseMovie){
+        this.nameMovie = nameMovie;
+        this.genreMovie = genreMovie;
+        this.countryMovie = countryMovie;
+        this.dateReleaseMovie = dateReleaseMovie;
+    }
 
     public long getId() {
         return id;
@@ -48,19 +51,19 @@ public class Movies {
         this.nameMovie = nameMovie;
     }
 
-    public String getGenreMovie() {
+    public int getGenreMovie() {
         return genreMovie;
     }
 
-    public void setGenreMovie(String genreMovie) {
+    public void setGenreMovie(int genreMovie) {
         this.genreMovie = genreMovie;
     }
 
-    public String getCountryMovie() {
+    public int getCountryMovie() {
         return countryMovie;
     }
 
-    public void setCountryMovie(String countryMovie) {
+    public void setCountryMovie(int countryMovie) {
         this.countryMovie = countryMovie;
     }
 

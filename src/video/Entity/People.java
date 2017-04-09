@@ -1,5 +1,4 @@
 package video.Entity;
-
 import java.util.HashSet;
 import java.util.Set;
 /**
@@ -11,11 +10,20 @@ public class People {
     private String familyPeople;
     private String sNamePeople;
     private String dateOfBirthPeople;
-    private String role;
+    private int role;
     private Set<Movies> moviesSet = new HashSet<>();
 
     public People(long id, String namePeople, String familyPeople, String sNamePeople,
-                  String dateOfBirthPeople, String role) {
+                  String dateOfBirthPeople, int role) {
+        this.id = id;
+        this.namePeople = namePeople;
+        this.familyPeople = familyPeople;
+        this.sNamePeople = sNamePeople;
+        this.dateOfBirthPeople = dateOfBirthPeople;
+        this.role = role;
+    }
+    public People(String namePeople, String familyPeople, String sNamePeople,
+                  String dateOfBirthPeople, int role) {
         this.id = id;
         this.namePeople = namePeople;
         this.familyPeople = familyPeople;
@@ -64,11 +72,11 @@ public class People {
         this.dateOfBirthPeople = dateOfBirthPeople;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
     }
 
