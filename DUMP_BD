@@ -1,0 +1,257 @@
+-- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: movies_project
+-- ------------------------------------------------------
+-- Server version	5.7.17-log
+
+--
+-- Table structure for table `countries`
+--
+
+DROP TABLE IF EXISTS `countries`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `countries` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `countries`
+--
+
+LOCK TABLES `countries` WRITE;
+/*!40000 ALTER TABLE `countries` DISABLE KEYS */;
+INSERT INTO `countries` VALUES (1,'США'),(2,'Германия'),(3,'Франция'),(4,'Россия'),(5,'Великобритания'),(6,'Новая Зеландия');
+/*!40000 ALTER TABLE `countries` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `genres`
+--
+
+DROP TABLE IF EXISTS `genres`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `genres` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `genres`
+--
+
+LOCK TABLES `genres` WRITE;
+/*!40000 ALTER TABLE `genres` DISABLE KEYS */;
+INSERT INTO `genres` VALUES (1,'Комедия'),(2,'Драма'),(3,'Боевик'),(4,'Триллер'),(5,'Ужасы'),(6,'Мистика'),(7,'Фантастика');
+/*!40000 ALTER TABLE `genres` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `movie_people_role`
+--
+
+DROP TABLE IF EXISTS `movie_people_role`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `movie_people_role` (
+  `id_movie` int(11) NOT NULL,
+  `id_people` int(11) NOT NULL,
+  `id_role` int(11) NOT NULL,
+  PRIMARY KEY (`id_movie`,`id_people`,`id_role`),
+  KEY `FK_mov_prod_id_people_id_people` (`id_people`),
+  KEY `FK_mov_prod_id_role_id_roles` (`id_role`),
+  CONSTRAINT `FK_mov_prod_id_movie_id_movies` FOREIGN KEY (`id_movie`) REFERENCES `movies` (`id`),
+  CONSTRAINT `FK_mov_prod_id_people_id_people` FOREIGN KEY (`id_people`) REFERENCES `people` (`Id`),
+  CONSTRAINT `FK_mov_prod_id_role_id_roles` FOREIGN KEY (`id_role`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `movie_people_role`
+--
+
+LOCK TABLES `movie_people_role` WRITE;
+/*!40000 ALTER TABLE `movie_people_role` DISABLE KEYS */;
+INSERT INTO `movie_people_role` VALUES (12,1,2),(12,2,1),(5,3,1),(12,3,1),(1,7,2),(2,7,2),(1,8,1),(1,9,1),(2,10,1),(3,11,2),(8,11,2),(3,12,1),(4,13,1),(4,14,2),(5,15,2),(5,16,1),(6,17,2),(6,18,1),(6,19,1),(6,20,1),(7,21,2),(7,22,1),(7,23,1),(8,24,1),(9,25,2),(9,26,1),(9,27,1),(10,28,2),(10,29,1),(11,30,2),(11,31,2),(11,32,1);
+/*!40000 ALTER TABLE `movie_people_role` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `movies`
+--
+
+DROP TABLE IF EXISTS `movies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `movies` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  `genre` int(20) DEFAULT NULL,
+  `countrie` int(20) DEFAULT NULL,
+  `year` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_movies_id_countrie_id_countries` (`countrie`),
+  KEY `FK_movies_id_genre_id_genres` (`genre`),
+  CONSTRAINT `FK_movies_id_countrie_id_countries` FOREIGN KEY (`countrie`) REFERENCES `countries` (`id`),
+  CONSTRAINT `FK_movies_id_genre_id_genres` FOREIGN KEY (`genre`) REFERENCES `genres` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `movies`
+--
+
+LOCK TABLES `movies` WRITE;
+/*!40000 ALTER TABLE `movies` DISABLE KEYS */;
+INSERT INTO `movies` VALUES (1,'Побег из Шоушенка',2,1,'1994-04-19'),(2,'Зеленая миля',2,1,'1999-04-01'),(3,'Начало',7,5,'2010-04-01'),(4,'Леон',3,3,'1994-04-01'),(5,'Бойцовский клуб',4,2,'1999-04-01'),(6,'Иван Васильевич меняет профессию',1,4,'1973-04-01'),(7,'Криминальное чтиво',4,1,'1994-04-01'),(8,'Интерстеллар',7,5,'2014-04-01'),(9,'Властелин колец',7,6,'2003-04-01'),(10,'Пианист',4,3,'2002-04-01'),(11,'Матрица',7,1,'1999-04-01'),(12,'Большой куш',4,5,'2000-04-01'),(13,'Игры разума',2,1,'2001-04-01'),(15,'От заката до рассвета',4,1,'1992-01-01');
+/*!40000 ALTER TABLE `movies` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `people`
+--
+
+DROP TABLE IF EXISTS `people`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `people` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `family` varchar(20) DEFAULT NULL,
+  `s_name` varchar(20) DEFAULT NULL,
+  `date_bday` date DEFAULT NULL,
+  `id_role` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `FK_people_id_role_id_roles` (`id_role`),
+  CONSTRAINT `FK_people_id_role_id_roles` FOREIGN KEY (`id_role`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `people`
+--
+
+LOCK TABLES `people` WRITE;
+/*!40000 ALTER TABLE `people` DISABLE KEYS */;
+INSERT INTO `people` VALUES (1,'Гай','Ричи','','1968-09-10',2),(2,'Джейсон','Стейтем','','1967-07-26',1),(3,'Бред','Пит','','1963-01-18',1),(4,'Рон','Ховард','','1954-03-01',2),(5,'Джейсон','Стейтем','','1967-07-26',1),(6,'Рассел','Кроу','','1964-04-07',1),(7,'Фрэнк','Дарабонт','','1959-01-28',2),(8,'Тим','Роббинс','','1958-10-16',1),(9,'Морган','Фриман','','1937-06-01',1),(10,'Том','Хэнкс','','1956-07-09',1),(11,'Кристофер','Нолан','','1970-07-30',2),(12,'Леонардо','ДиКаприо','','1974-10-11',1),(13,'Жан','Рено','','1948-07-30',1),(14,'Люк','Бессон','','1959-03-18',2),(15,'Девид','Финчер','','1962-08-28',2),(16,'Эдвард','Нортон','','1969-08-18',1),(17,'Леонид','Гайдай','Иовович','1923-01-30',2),(18,'Демьяненко','Александр','Сергеевич','1937-05-30',1),(19,'Юрий','Яковлев','Васильевич','1928-04-25',1),(20,'Леонид','Куравлев','Вячеславович','1936-10-08',1),(21,'Квентин','Тарантино','','1963-03-27',2),(22,'Брюс','Уиллес','','1955-03-19',1),(23,'Джон','Траволта','','1954-02-18',1),(24,'Мэтью','МакКонахи','','1969-11-04',1),(25,'Питер','Джексон','','1961-10-31',2),(26,'Элайджа','Вуд','','1981-01-28',1),(27,'Орландо','Блум','','1977-01-13',1),(28,'Роман','Полански','','1933-08-18',2),(29,'Эдриан','Броуди','','1973-04-14',1),(30,'Лана','Вачовски','','1965-06-21',2),(31,'Лилли','Вачовски','','1967-12-29',2),(32,'Киану','Ривз','','1964-09-02',1);
+/*!40000 ALTER TABLE `people` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `privileges`
+--
+
+DROP TABLE IF EXISTS `privileges`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `privileges` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='Привилегии для Users (Admin, Users ets)';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `privileges`
+--
+
+LOCK TABLES `privileges` WRITE;
+/*!40000 ALTER TABLE `privileges` DISABLE KEYS */;
+INSERT INTO `privileges` VALUES (1,'Admin'),(2,'User');
+/*!40000 ALTER TABLE `privileges` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reviews`
+--
+
+DROP TABLE IF EXISTS `reviews`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `reviews` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_movies` int(11) DEFAULT NULL,
+  `id_user` int(11) DEFAULT NULL,
+  `rank` int(11) DEFAULT NULL,
+  `comment_user` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_reviews_id_movie_id_movies` (`id_movies`),
+  KEY `FK_reviews_id_user_id_users` (`id_user`),
+  CONSTRAINT `FK_reviews_id_movie_id_movies` FOREIGN KEY (`id_movies`) REFERENCES `movies` (`id`),
+  CONSTRAINT `FK_reviews_id_user_id_users` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reviews`
+--
+
+LOCK TABLES `reviews` WRITE;
+/*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+INSERT INTO `reviews` VALUES (1,1,1,5,'Отличный фильм'),(2,1,2,5,'Отличный фильм'),(3,2,1,5,'Отличный фильм'),(4,3,1,4,'Неплохой фильм'),(5,4,1,5,'Отличный фильм'),(6,5,1,5,'Отличный фильм'),(7,6,1,4,'Нормальный фильм'),(8,7,1,5,'Отличный фильм'),(9,8,1,5,'Супер фильм'),(10,9,1,5,'Отличный фильм'),(11,5,2,5,'Отличный фильм'),(12,7,2,5,'Отличный фильм'),(13,3,2,4,'Неплохой фильм');
+/*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (1,'Актер'),(2,'Режисер');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL,
+  `family` varchar(20) DEFAULT NULL,
+  `s_name` varchar(20) DEFAULT NULL,
+  `password` varchar(20) DEFAULT NULL,
+  `privilege_id` int(11) DEFAULT NULL,
+  `e_mail` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_users_id_privil_id_privileges` (`privilege_id`),
+  CONSTRAINT `FK_users_id_privil_id_privileges` FOREIGN KEY (`privilege_id`) REFERENCES `privileges` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Виталий','Ушаков','Григорьевич','avtolik',1,'vinty1978@gmail.com'),(2,'Виталий','Ушаков','Григорьевич','avtolik2',2,'uv@ecp.by'),(3,'Валерий','Нечай','Сергеевич','vn@ecp.by',2,'qwerty'),(4,'Бобейко','Александр','Григорьевич','ab@ecp.by',2,'qwerty2');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+-- Dump completed on 2017-04-08 18:50:10
